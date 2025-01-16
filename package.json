@@ -18,6 +18,7 @@
     "@angular/platform-browser": "^19.1.0",
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",
+    "@sentry/angular": "^8.50.0",
     "appwrite": "^16.1.0",
     "dwolla-v2": "^3.4.0",
     "plaid": "^30.0.0",
