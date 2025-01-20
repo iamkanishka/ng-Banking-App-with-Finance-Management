@@ -21,6 +21,7 @@
     "@sentry/angular": "^8.50.0",
     "appwrite": "^16.1.0",
     "dwolla-v2": "^3.4.0",
+    "ng2-charts": "^8.0.0",
     "ngx-plaid-link": "^14.0.0",
     "plaid": "^30.0.0",
     "rxjs": "~7.8.0",
