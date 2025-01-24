@@ -25,3 +25,10 @@ export type TransferParams = {
   destinationFundingSourceUrl: string;
   amount: string;
 };
+
+
+export type AddFundingSourceParams = {
+  dwollaCustomerId: string;
+  processorToken: string;
+  bankName: string;
+};
