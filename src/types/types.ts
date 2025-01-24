@@ -17,3 +17,11 @@ export type NewDwollaCustomerParams = {
   dateOfBirth: string;
   ssn: string;
 };
+
+
+
+export type TransferParams = {
+  sourceFundingSourceUrl: string;
+  destinationFundingSourceUrl: string;
+  amount: string;
+};
