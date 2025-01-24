@@ -6,6 +6,7 @@ import {
   CreateFundingSourceOptions,
   NewDwollaCustomerParams,
   TransferParams,
+  AddFundingSourceParams,
 } from '../../types/types';
 
 @Injectable({
@@ -86,6 +87,28 @@ export class DwollaServiceService {
     } catch (err) {
       console.error('Transfer fund failed: ', err);
       return null;
+    }
+  }
+
+  async addFundingSource({
+    dwollaCustomerId,
+    processorToken,
+    bankName,
+  }: AddFundingSourceParams) {
+    try {
+      // create dwolla auth link
+      const dwollaAuthLinks = await this.createOnDemandAuthorization();
+
+      // add funding source to the dwolla customer & get the funding source url
+      const fundingSourceOptions = {
+        customerId: dwollaCustomerId,
+        fundingSourceName: bankName,
+        plaidToken: processorToken,
+        _links: dwollaAuthLinks,
+      };
+      return await this.createFundingSource(fundingSourceOptions);
+    } catch (err) {
+      console.error('Transfer fund failed: ', err);
     }
   }
 }
