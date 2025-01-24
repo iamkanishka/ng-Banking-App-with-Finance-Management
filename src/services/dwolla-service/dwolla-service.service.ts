@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment.development';
 import {
   CreateFundingSourceOptions,
   NewDwollaCustomerParams,
+  TransferParams,
 } from '../../types/types';
 
 @Injectable({
@@ -19,9 +20,7 @@ export class DwollaServiceService {
   constructor() {}
 
   // Create a Dwolla Funding Source using a Plaid Processor Token
-  async createFundingSource(
-    options: CreateFundingSourceOptions
-  ): Promise<string | null | undefined> {
+  async createFundingSource(options: CreateFundingSourceOptions): Promise<any> {
     try {
       return await this.dwollaClient
         .post(`customers/${options.customerId}/funding-sources`, {
@@ -37,7 +36,7 @@ export class DwollaServiceService {
 
   async createDwollaCustomer(
     newCustomer: NewDwollaCustomerParams
-  ): Promise<string | null | undefined> {
+  ): Promise<any> {
     try {
       return await this.dwollaClient
         .post('customers', newCustomer)
@@ -48,7 +47,7 @@ export class DwollaServiceService {
     }
   }
 
-  async createOnDemandAuthorization(): Promise<string | null | undefined> {
+  async createOnDemandAuthorization(): Promise<any> {
     try {
       const onDemandAuthorization = await this.dwollaClient.post(
         'on-demand-authorizations'
@@ -57,6 +56,35 @@ export class DwollaServiceService {
       return authLink;
     } catch (err) {
       console.error('Creating an On Demand Authorization Failed: ', err);
+      return null;
+    }
+  }
+
+  async createTransfer({
+    sourceFundingSourceUrl,
+    destinationFundingSourceUrl,
+    amount,
+  }: TransferParams): Promise<any> {
+    try {
+      const requestBody = {
+        _links: {
+          source: {
+            href: sourceFundingSourceUrl,
+          },
+          destination: {
+            href: destinationFundingSourceUrl,
+          },
+        },
+        amount: {
+          currency: 'USD',
+          value: amount,
+        },
+      };
+      return await this.dwollaClient
+        .post('transfers', requestBody)
+        .then((res) => res.headers.get('location'));
+    } catch (err) {
+      console.error('Transfer fund failed: ', err);
       return null;
     }
   }
