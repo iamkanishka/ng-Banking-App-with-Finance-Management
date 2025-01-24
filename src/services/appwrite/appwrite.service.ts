@@ -6,6 +6,10 @@ import { environment } from '../../environments/environment.development';
   providedIn: 'root',
 })
 export class AppwriteService {
+
+
+  constructor() {}
+
   async createSessionClient() {
     const client = new Client()
       .setEndpoint(environment.APPWRITE_ENDPOINT!)
@@ -26,5 +30,21 @@ export class AppwriteService {
     };
   }
 
-  constructor() {}
+    async  createAdminClient() {
+    const client = new Client()
+      .setEndpoint(environment.APPWRITE_ENDPOINT!)
+      .setProject(environment.APPWRITE_PROJECT!)
+      // .setKey(environment.APPWRITE_KEY!);
+  
+    return {
+      get account() {
+        return new Account(client);
+      },
+      get database() {
+        return new Databases(client);
+      },
+     
+    };
+  }
+
 }
