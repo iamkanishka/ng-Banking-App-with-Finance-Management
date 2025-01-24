@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { Client } from 'dwolla-v2';
 import { environment } from '../../environments/environment.development';
-import { CreateFundingSourceOptions } from '../../types/types';
+import {
+  CreateFundingSourceOptions,
+  NewDwollaCustomerParams,
+} from '../../types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +31,19 @@ export class DwollaServiceService {
         .then((res) => res.headers.get('location'));
     } catch (err) {
       console.error('Creating a Funding Source Failed: ', err);
+      return null;
+    }
+  }
+
+  async createDwollaCustomer(
+    newCustomer: NewDwollaCustomerParams
+  ): Promise<string | null | undefined> {
+    try {
+      return await this.dwollaClient
+        .post('customers', newCustomer)
+        .then((res) => res.headers.get('location'));
+    } catch (err) {
+      console.error('Creating a Dwolla Customer Failed: ', err);
       return null;
     }
   }
