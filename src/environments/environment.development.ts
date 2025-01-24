@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  DWOLLA_ENV: 'sandbox',
+  DWOLLA_KEY: '',
+  DWOLLA_SECRET: '',
 };
