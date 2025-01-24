@@ -47,4 +47,17 @@ export class DwollaServiceService {
       return null;
     }
   }
+
+  async createOnDemandAuthorization(): Promise<string | null | undefined> {
+    try {
+      const onDemandAuthorization = await this.dwollaClient.post(
+        'on-demand-authorizations'
+      );
+      const authLink = onDemandAuthorization.body._links;
+      return authLink;
+    } catch (err) {
+      console.error('Creating an On Demand Authorization Failed: ', err);
+      return null;
+    }
+  }
 }
