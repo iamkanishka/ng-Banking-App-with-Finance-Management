@@ -82,3 +82,7 @@ export  interface exchangePublicToken{
   publicToken: string;
   user: User;
 }
+
+export interface getBanks {
+  userId: string;
+}
