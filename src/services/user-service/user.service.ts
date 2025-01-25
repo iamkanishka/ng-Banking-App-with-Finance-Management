@@ -116,4 +116,18 @@ export class UserService {
       console.error('Error', error);
     }
   }
+
+  async getLoggedInUser() {
+    try {
+      const { account } = await this.appwriteService.createSessionClient();
+      const result = await account.get();
+
+      const user = await this.getUserInfo({ userId: result.$id });
+
+      return parseStringify(user);
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 }
