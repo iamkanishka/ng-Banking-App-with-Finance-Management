@@ -11,7 +11,7 @@ import {
 } from 'plaid';
 import { DwollaServiceService } from '../dwolla-service/dwolla-service.service';
 import { environment } from '../../environments/environment.development';
-import { getUserInfo, signIn, SignUp, User, createBankAccount, exchangePublicToken } from '../../types/types';
+import { getUserInfo, signIn, SignUp, User, createBankAccount, exchangePublicToken, AddFundingSource } from '../../types/types';
 import { parseStringify, extractCustomerIdFromUrl, encryptId } from '../../utils/util';
 @Injectable({
   providedIn: 'root',
@@ -261,5 +261,30 @@ export class UserService {
       console.error("An error occurred while creating exchanging token:", error);
     }
   };
+
+
+  async addFundingSource({
+    dwollaCustomerId,
+    processorToken,
+    bankName,
+  }: AddFundingSource){
+    try {
+      // create dwolla auth link
+      const dwollaAuthLinks = await this.createOnDemandAuthorization();
+  
+      // add funding source to the dwolla customer & get the funding source url
+      const fundingSourceOptions = {
+        customerId: dwollaCustomerId,
+        fundingSourceName: bankName,
+        plaidToken: processorToken,
+        _links: dwollaAuthLinks,
+      };
+      return await this.createFundingSource(fundingSourceOptions);
+    } catch (err) {
+      console.error("Transfer fund failed: ", err);
+    }
+  };
+  
+
 
 }
