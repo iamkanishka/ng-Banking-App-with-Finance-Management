@@ -32,3 +32,8 @@ export type AddFundingSourceParams = {
   processorToken: string;
   bankName: string;
 };
+
+
+export interface getUserInfoProps {
+  userId: string;
+}
