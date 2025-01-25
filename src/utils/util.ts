@@ -9,3 +9,8 @@ export function extractCustomerIdFromUrl(url: string) {
 
   return customerId;
 }
+
+
+export function encryptId(id: string) {
+  return btoa(id);
+}
