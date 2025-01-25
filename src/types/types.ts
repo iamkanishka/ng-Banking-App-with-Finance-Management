@@ -5,7 +5,7 @@ export interface CreateFundingSourceOptions {
   _links: object; // Dwolla On Demand Authorization Link
 }
 
-export type NewDwollaCustomerParams = {
+export type NewDwollaCustomer = {
   firstName: string;
   lastName: string;
   email: string;
@@ -18,22 +18,23 @@ export type NewDwollaCustomerParams = {
   ssn: string;
 };
 
-
-
-export type TransferParams = {
+export type Transfer = {
   sourceFundingSourceUrl: string;
   destinationFundingSourceUrl: string;
   amount: string;
 };
 
-
-export type AddFundingSourceParams = {
+export type AddFundingSource = {
   dwollaCustomerId: string;
   processorToken: string;
   bankName: string;
 };
 
-
-export interface getUserInfoProps {
+export interface getUserInfo {
   userId: string;
+}
+
+export  interface signIn {
+  email: string;
+  password: string;
 }
