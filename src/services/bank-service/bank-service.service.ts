@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment.development';
 import { AppwriteService } from '../appwrite/appwrite.service';
 import { PlaidServiceService } from '../plaid-service/plaid-service.service';
 import { parseStringify } from '../../utils/util';
-import { getBank, getBanks } from '../../types/types';
+import { getBank, getBankByAccountId, getBanks } from '../../types/types';
 import { DwollaServiceService } from '../dwolla-service/dwolla-service.service';
 import { Query } from 'appwrite';
 
@@ -50,4 +50,26 @@ export class BankServiceService {
       console.log(error);
     }
   };
+
+
+  async getBankByAccountId({
+    accountId,
+  }: getBankByAccountId){
+    try {
+      const { database } = await this.appwriteService.createAdminClient();
+  
+      const bank = await database.listDocuments(
+        this.DATABASE_ID!,
+        this.BANK_COLLECTION_ID!,
+        [Query.equal("accountId", [accountId])]
+      );
+  
+      if (bank.total !== 1) return null;
+  
+      return parseStringify(bank.documents[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 }
