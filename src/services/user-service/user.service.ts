@@ -11,8 +11,8 @@ import {
 } from 'plaid';
 import { DwollaServiceService } from '../dwolla-service/dwolla-service.service';
 import { environment } from '../../environments/environment.development';
-import { getUserInfo, signIn, SignUp, User, createBankAccount } from '../../types/types';
-import { parseStringify, extractCustomerIdFromUrl } from '../../utils/util';
+import { getUserInfo, signIn, SignUp, User, createBankAccount, exchangePublicToken } from '../../types/types';
+import { parseStringify, extractCustomerIdFromUrl, encryptId } from '../../utils/util';
 @Injectable({
   providedIn: 'root',
 })
@@ -194,6 +194,71 @@ export class UserService {
       return parseStringify(bankAccount);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+
+  async exchangePublicToken({
+    publicToken,
+    user,
+  }: exchangePublicToken) {
+    try {
+      // Exchange public token for access token and item ID
+      const response = await this.plaidService.plaidClient.itemPublicTokenExchange({
+        public_token: publicToken,
+      });
+  
+      const accessToken = response.data.access_token;
+      const itemId = response.data.item_id;
+  
+      // Get account information from Plaid using the access token
+      const accountsResponse = await this.plaidService.plaidClient.accountsGet({
+        access_token: accessToken,
+      });
+  
+      const accountData = accountsResponse.data.accounts[0];
+  
+      // Create a processor token for Dwolla using the access token and account ID
+      const request: ProcessorTokenCreateRequest = {
+        access_token: accessToken,
+        account_id: accountData.account_id,
+        processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
+      };
+  
+      const processorTokenResponse = await this.plaidService.plaidClient.processorTokenCreate(
+        request
+      );
+      const processorToken = processorTokenResponse.data.processor_token;
+  
+      // Create a funding source URL for the account using the Dwolla customer ID, processor token, and bank name
+      const fundingSourceUrl = await this.addFundingSource({
+        dwollaCustomerId: user.dwollaCustomerId,
+        processorToken,
+        bankName: accountData.name,
+      });
+  
+      // If the funding source URL is not created, throw an error
+      if (!fundingSourceUrl) throw Error;
+  
+      // Create a bank account using the user ID, item ID, account ID, access token, funding source URL, and shareableId ID
+      await this.createBankAccount({
+        userId: user.$id,
+        bankId: itemId,
+        accountId: accountData.account_id,
+        accessToken,
+        fundingSourceUrl,
+        shareableId: encryptId(accountData.account_id),
+      });
+  
+      // Revalidate the path to reflect the changes
+      // revalidatePath("/");
+  
+      // Return a success message
+      return parseStringify({
+        publicTokenExchange: "complete",
+      });
+    } catch (error) {
+      console.error("An error occurred while creating exchanging token:", error);
     }
   };
 
