@@ -11,8 +11,20 @@ import {
 } from 'plaid';
 import { DwollaServiceService } from '../dwolla-service/dwolla-service.service';
 import { environment } from '../../environments/environment.development';
-import { getUserInfo, signIn, SignUp, User, createBankAccount, exchangePublicToken, AddFundingSource } from '../../types/types';
-import { parseStringify, extractCustomerIdFromUrl, encryptId } from '../../utils/util';
+import {
+  getUserInfo,
+  signIn,
+  SignUp,
+  User,
+  createBankAccount,
+  exchangePublicToken,
+  AddFundingSource,
+} from '../../types/types';
+import {
+  parseStringify,
+  extractCustomerIdFromUrl,
+  encryptId,
+} from '../../utils/util';
 @Injectable({
   providedIn: 'root',
 })
@@ -137,7 +149,7 @@ export class UserService {
 
       // cookies().delete("appwrite-session");
 
-      await account.deleteSession('current');
+      return await account.deleteSession('current');
     } catch (error) {
       return null;
     }
@@ -165,18 +177,17 @@ export class UserService {
     }
   }
 
-
-  async createBankAccount ({
+  async createBankAccount({
     userId,
     bankId,
     accountId,
     accessToken,
     fundingSourceUrl,
     shareableId,
-  }: createBankAccount){
+  }: createBankAccount) {
     try {
       const { database } = await this.appwriteService.createAdminClient();
-  
+
       const bankAccount = await database.createDocument(
         this.DATABASE_ID!,
         this.BANK_COLLECTION_ID!,
@@ -190,56 +201,52 @@ export class UserService {
           shareableId,
         }
       );
-  
+
       return parseStringify(bankAccount);
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
-
-  async exchangePublicToken({
-    publicToken,
-    user,
-  }: exchangePublicToken) {
+  async exchangePublicToken({ publicToken, user }: exchangePublicToken) {
     try {
       // Exchange public token for access token and item ID
-      const response = await this.plaidService.plaidClient.itemPublicTokenExchange({
-        public_token: publicToken,
-      });
-  
+      const response =
+        await this.plaidService.plaidClient.itemPublicTokenExchange({
+          public_token: publicToken,
+        });
+
       const accessToken = response.data.access_token;
       const itemId = response.data.item_id;
-  
+
       // Get account information from Plaid using the access token
       const accountsResponse = await this.plaidService.plaidClient.accountsGet({
         access_token: accessToken,
       });
-  
+
       const accountData = accountsResponse.data.accounts[0];
-  
+
       // Create a processor token for Dwolla using the access token and account ID
       const request: ProcessorTokenCreateRequest = {
         access_token: accessToken,
         account_id: accountData.account_id,
-        processor: "dwolla" as ProcessorTokenCreateRequestProcessorEnum,
+        processor: 'dwolla' as ProcessorTokenCreateRequestProcessorEnum,
       };
-  
-      const processorTokenResponse = await this.plaidService.plaidClient.processorTokenCreate(
-        request
-      );
+
+      const processorTokenResponse =
+        await this.plaidService.plaidClient.processorTokenCreate(request);
       const processorToken = processorTokenResponse.data.processor_token;
-  
+
       // Create a funding source URL for the account using the Dwolla customer ID, processor token, and bank name
       const fundingSourceUrl = await this.addFundingSource({
         dwollaCustomerId: user.dwollaCustomerId,
         processorToken,
         bankName: accountData.name,
       });
-  
+
       // If the funding source URL is not created, throw an error
       if (!fundingSourceUrl) throw Error;
-  
+
       // Create a bank account using the user ID, item ID, account ID, access token, funding source URL, and shareableId ID
       await this.createBankAccount({
         userId: user.$id,
@@ -249,29 +256,32 @@ export class UserService {
         fundingSourceUrl,
         shareableId: encryptId(accountData.account_id),
       });
-  
+
       // Revalidate the path to reflect the changes
       // revalidatePath("/");
-  
+
       // Return a success message
       return parseStringify({
-        publicTokenExchange: "complete",
+        publicTokenExchange: 'complete',
       });
     } catch (error) {
-      console.error("An error occurred while creating exchanging token:", error);
+      console.error(
+        'An error occurred while creating exchanging token:',
+        error
+      );
     }
-  };
-
+  }
 
   async addFundingSource({
     dwollaCustomerId,
     processorToken,
     bankName,
-  }: AddFundingSource){
+  }: AddFundingSource) {
     try {
       // create dwolla auth link
-      const dwollaAuthLinks = await this.dwollaService.createOnDemandAuthorization();
-  
+      const dwollaAuthLinks =
+        await this.dwollaService.createOnDemandAuthorization();
+
       // add funding source to the dwolla customer & get the funding source url
       const fundingSourceOptions = {
         customerId: dwollaCustomerId,
@@ -281,10 +291,7 @@ export class UserService {
       };
       return await this.dwollaService.createFundingSource(fundingSourceOptions);
     } catch (err) {
-      console.error("Transfer fund failed: ", err);
+      console.error('Transfer fund failed: ', err);
     }
-  };
-  
-
-
+  }
 }
