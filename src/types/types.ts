@@ -90,3 +90,7 @@ export interface getBanks {
 export interface getBank {
   documentId: string;
 }
+
+export interface getBankByAccountId {
+  accountId: string;
+}
