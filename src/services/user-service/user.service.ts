@@ -130,4 +130,16 @@ export class UserService {
       return null;
     }
   }
+
+  async logoutAccount() {
+    try {
+      const { account } = await this.appwriteService.createSessionClient();
+
+      // cookies().delete("appwrite-session");
+
+      await account.deleteSession('current');
+    } catch (error) {
+      return null;
+    }
+  }
 }
