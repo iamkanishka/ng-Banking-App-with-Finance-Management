@@ -34,7 +34,20 @@ export interface getUserInfo {
   userId: string;
 }
 
-export  interface signIn {
+export interface signIn {
   email: string;
   password: string;
 }
+
+export type SignUp = {
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  dateOfBirth: string;
+  ssn: string;
+  email: string;
+  password: string;
+};
