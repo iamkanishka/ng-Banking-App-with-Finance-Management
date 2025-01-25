@@ -77,3 +77,8 @@ export interface createBankAccount {
   fundingSourceUrl: string;
   shareableId: string;
 }
+
+export  interface exchangePublicToken{
+  publicToken: string;
+  user: User;
+}
