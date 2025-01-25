@@ -78,11 +78,15 @@ export interface createBankAccount {
   shareableId: string;
 }
 
-export  interface exchangePublicToken{
+export interface exchangePublicToken {
   publicToken: string;
   user: User;
 }
 
 export interface getBanks {
   userId: string;
+}
+
+export interface getBank {
+  documentId: string;
 }
