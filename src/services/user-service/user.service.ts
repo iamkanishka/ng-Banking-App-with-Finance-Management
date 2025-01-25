@@ -11,7 +11,7 @@ import {
 } from 'plaid';
 import { DwollaServiceService } from '../dwolla-service/dwolla-service.service';
 import { environment } from '../../environments/environment.development';
-import { getUserInfo, signIn, SignUp, User, createBankAccountProps } from '../../types/types';
+import { getUserInfo, signIn, SignUp, User, createBankAccount } from '../../types/types';
 import { parseStringify, extractCustomerIdFromUrl } from '../../utils/util';
 @Injectable({
   providedIn: 'root',
@@ -166,6 +166,35 @@ export class UserService {
   }
 
 
-
+  async createBankAccount ({
+    userId,
+    bankId,
+    accountId,
+    accessToken,
+    fundingSourceUrl,
+    shareableId,
+  }: createBankAccount){
+    try {
+      const { database } = await this.appwriteService.createAdminClient();
+  
+      const bankAccount = await database.createDocument(
+        this.DATABASE_ID!,
+        this.BANK_COLLECTION_ID!,
+        ID.unique(),
+        {
+          userId,
+          bankId,
+          accountId,
+          accessToken,
+          fundingSourceUrl,
+          shareableId,
+        }
+      );
+  
+      return parseStringify(bankAccount);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 }
