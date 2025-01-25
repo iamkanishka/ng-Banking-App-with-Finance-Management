@@ -11,7 +11,7 @@ import {
 } from 'plaid';
 import { DwollaServiceService } from '../dwolla-service/dwolla-service.service';
 import { environment } from '../../environments/environment.development';
-import { getUserInfo, signIn, SignUp } from '../../types/types';
+import { getUserInfo, signIn, SignUp, User, createBankAccountProps } from '../../types/types';
 import { parseStringify, extractCustomerIdFromUrl } from '../../utils/util';
 @Injectable({
   providedIn: 'root',
@@ -142,4 +142,30 @@ export class UserService {
       return null;
     }
   }
+
+  async createLinkToken(user: User) {
+    try {
+      const tokenParams = {
+        user: {
+          client_user_id: user.$id,
+        },
+        client_name: `${user.firstName} ${user.lastName}`,
+        products: ['auth'] as Products[],
+        language: 'en',
+        country_codes: ['US'] as CountryCode[],
+      };
+
+      const response = await this.plaidService.plaidClient.linkTokenCreate(
+        tokenParams
+      );
+
+      return parseStringify({ linkToken: response.data.link_token });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+
 }
