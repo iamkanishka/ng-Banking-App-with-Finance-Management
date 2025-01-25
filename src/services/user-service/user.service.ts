@@ -270,7 +270,7 @@ export class UserService {
   }: AddFundingSource){
     try {
       // create dwolla auth link
-      const dwollaAuthLinks = await this.createOnDemandAuthorization();
+      const dwollaAuthLinks = await this.dwollaService.createOnDemandAuthorization();
   
       // add funding source to the dwolla customer & get the funding source url
       const fundingSourceOptions = {
@@ -279,7 +279,7 @@ export class UserService {
         plaidToken: processorToken,
         _links: dwollaAuthLinks,
       };
-      return await this.createFundingSource(fundingSourceOptions);
+      return await this.dwollaService.createFundingSource(fundingSourceOptions);
     } catch (err) {
       console.error("Transfer fund failed: ", err);
     }
