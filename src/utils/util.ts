@@ -1,3 +1,5 @@
+import { AccountTypes } from "../types/types";
+
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 export function extractCustomerIdFromUrl(url: string) {
@@ -97,4 +99,32 @@ export const formatDateTime = (dateString: Date) => {
 export const removeSpecialCharacters = (value: string) => {
   return value.replace(/[^\w\s]/gi, "");
 };
+
+export function getAccountTypeColors(type: AccountTypes) {
+  switch (type) {
+    case "depository":
+      return {
+        bg: "bg-blue-25",
+        lightBg: "bg-blue-100",
+        title: "text-blue-900",
+        subText: "text-blue-700",
+      };
+
+    case "credit":
+      return {
+        bg: "bg-success-25",
+        lightBg: "bg-success-100",
+        title: "text-success-900",
+        subText: "text-success-700",
+      };
+
+    default:
+      return {
+        bg: "bg-green-25",
+        lightBg: "bg-green-100",
+        title: "text-green-900",
+        subText: "text-green-700",
+      };
+  }
+}
 
