@@ -10,6 +10,7 @@ import {
   getBankByAccountId,
   getBanks,
   getInstitution,
+  getTransactions,
 } from '../../types/types';
 import { DwollaServiceService } from '../dwolla-service/dwolla-service.service';
 import { Query } from 'appwrite';
@@ -145,4 +146,43 @@ export class BankServiceService {
       console.error('An error occurred while getting the accounts:', error);
     }
   }
+
+
+  async getTransactions({
+    accessToken,
+  }: getTransactions){
+    let hasMore = true;
+    let transactions: any = [];
+  
+    try {
+      // Iterate through each page of new transaction updates for item
+      while (hasMore) {
+        const response = await this.plaidService.plaidClient.transactionsSync({
+          access_token: accessToken,
+        });
+  
+        const data = response.data;
+  
+        transactions = response.data.added.map((transaction : any) => ({
+          id: transaction.transaction_id,
+          name: transaction.name,
+          paymentChannel: transaction.payment_channel,
+          type: transaction.payment_channel,
+          accountId: transaction.account_id,
+          amount: transaction.amount,
+          pending: transaction.pending,
+          category: transaction.category ? transaction.category[0] : "",
+          date: transaction.date,
+          image: transaction.logo_url,
+        }));
+  
+        hasMore = data.has_more;
+      }
+  
+      return parseStringify(transactions);
+    } catch (error) {
+      console.error("An error occurred while getting the accounts:", error);
+    }
+  };
+
 }
