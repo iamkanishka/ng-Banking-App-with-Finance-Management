@@ -169,3 +169,8 @@ export  type NewUser = {
   name: string;
   password: string;
 };
+
+export type LoginUser = {
+  email: string;
+  password: string;
+};
