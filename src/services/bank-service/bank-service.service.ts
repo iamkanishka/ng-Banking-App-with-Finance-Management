@@ -12,7 +12,7 @@ import {
   getInstitution,
   getTransactions,
 } from '../../types/types';
-import { DwollaServiceService } from '../dwolla-service/dwolla-service.service';
+ 
 import { Query } from 'appwrite';
 import { CountryCode } from 'plaid';
 
@@ -26,7 +26,7 @@ export class BankServiceService {
   constructor(
     private appwriteService: AppwriteService,
     private plaidService: PlaidServiceService,
-    private dwollaService: DwollaServiceService
+  
   ) {}
 
   async getBanks({ userId }: getBanks) {
