@@ -161,3 +161,11 @@ export type Transaction = {
   senderBankId: string;
   receiverBankId: string;
 };
+
+
+export  type NewUser = {
+  userId: string;
+  email: string;
+  name: string;
+  password: string;
+};
