@@ -4,7 +4,7 @@ import { ID, Query } from 'appwrite';
 import { AppwriteService } from '../appwrite/appwrite.service';
 
 import { environment } from '../../environments/environment.development';
-import { CreateTransaction } from '../../types/types';
+import { CreateTransaction, getTransactionsByBankId } from '../../types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -35,4 +35,36 @@ export class TransactionServiceService {
       console.log(error);
     }
   }
+
+
+  async getTransactionsByBankId({bankId}: getTransactionsByBankId){
+    try {
+      const { database } = await this.appwriteService.createAdminClient();
+  
+      const senderTransactions = await database.listDocuments(
+        this.DATABASE_ID!,
+        this.TRANSACTION_COLLECTION_ID!,
+        [Query.equal('senderBankId', bankId)],
+      )
+  
+      const receiverTransactions = await database.listDocuments(
+        this.DATABASE_ID!,
+        this.TRANSACTION_COLLECTION_ID!,
+        [Query.equal('receiverBankId', bankId)],
+      );
+  
+      const transactions = {
+        total: senderTransactions.total + receiverTransactions.total,
+        documents: [
+          ...senderTransactions.documents, 
+          ...receiverTransactions.documents,
+        ]
+      }
+  
+      return parseStringify(transactions);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 }
