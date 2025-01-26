@@ -131,3 +131,8 @@ export interface CreateTransaction {
   receiverBankId: string;
   email: string;
 }
+
+
+export interface getTransactionsByBankId {
+  bankId: string;
+}
