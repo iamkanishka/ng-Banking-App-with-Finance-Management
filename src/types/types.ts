@@ -95,18 +95,15 @@ export interface getBankByAccountId {
   accountId: string;
 }
 
-
-export  interface getAccounts {
+export interface getAccounts {
   userId: string;
 }
 
-
-export  interface getInstitution {
+export interface getInstitution {
   institutionId: string;
 }
 
-
-export  type Bank = {
+export type Bank = {
   $id: string;
   accountId: string;
   bankId: string;
@@ -116,11 +113,9 @@ export  type Bank = {
   shareableId: string;
 };
 
-
 export interface getTransactions {
   accessToken: string;
 }
-
 
 export interface CreateTransaction {
   name: string;
@@ -132,15 +127,19 @@ export interface CreateTransaction {
   email: string;
 }
 
-
 export interface getTransactionsByBankId {
   bankId: string;
 }
 
-export  type AccountTypes =
-  | "depository"
-  | "credit"
-  | "loan "
-  | "investment"
-  | "other";
+export type AccountTypes =
+  | 'depository'
+  | 'credit'
+  | 'loan '
+  | 'investment'
+  | 'other';
 
+export type CategoryCount = {
+  name: string;
+  count: number;
+  totalCount: number;
+};
