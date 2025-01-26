@@ -14,3 +14,12 @@ export function extractCustomerIdFromUrl(url: string) {
 export function encryptId(id: string) {
   return btoa(id);
 }
+
+
+export const getTransactionStatus = (date: Date) => {
+  const today = new Date();
+  const twoDaysAgo = new Date(today);
+  twoDaysAgo.setDate(today.getDate() - 2);
+
+  return date > twoDaysAgo ? "Processing" : "Success";
+};
