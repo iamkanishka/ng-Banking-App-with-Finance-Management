@@ -100,3 +100,7 @@ export  interface getAccounts {
   userId: string;
 }
 
+
+export  interface getInstitution {
+  institutionId: string;
+}
