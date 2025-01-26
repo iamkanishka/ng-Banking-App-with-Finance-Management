@@ -136,3 +136,11 @@ export interface CreateTransaction {
 export interface getTransactionsByBankId {
   bankId: string;
 }
+
+export  type AccountTypes =
+  | "depository"
+  | "credit"
+  | "loan "
+  | "investment"
+  | "other";
+
