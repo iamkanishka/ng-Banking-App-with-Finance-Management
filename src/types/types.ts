@@ -115,3 +115,8 @@ export  type Bank = {
   userId: string;
   shareableId: string;
 };
+
+
+export interface getTransactions {
+  accessToken: string;
+}
