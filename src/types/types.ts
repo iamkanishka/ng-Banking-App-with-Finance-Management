@@ -94,3 +94,9 @@ export interface getBank {
 export interface getBankByAccountId {
   accountId: string;
 }
+
+
+export  interface getAccounts {
+  userId: string;
+}
+
