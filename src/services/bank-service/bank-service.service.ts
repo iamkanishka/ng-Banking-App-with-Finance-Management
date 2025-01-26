@@ -3,9 +3,17 @@ import { environment } from '../../environments/environment.development';
 import { AppwriteService } from '../appwrite/appwrite.service';
 import { PlaidServiceService } from '../plaid-service/plaid-service.service';
 import { parseStringify } from '../../utils/util';
-import { getAccounts, getBank, getBankByAccountId, getBanks } from '../../types/types';
+import {
+  Bank,
+  getAccounts,
+  getBank,
+  getBankByAccountId,
+  getBanks,
+  getInstitution,
+} from '../../types/types';
 import { DwollaServiceService } from '../dwolla-service/dwolla-service.service';
 import { Query } from 'appwrite';
+import { CountryCode } from 'plaid';
 
 @Injectable({
   providedIn: 'root',
@@ -49,48 +57,45 @@ export class BankServiceService {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
-
-  async getBankByAccountId({
-    accountId,
-  }: getBankByAccountId){
+  async getBankByAccountId({ accountId }: getBankByAccountId) {
     try {
       const { database } = await this.appwriteService.createAdminClient();
-  
+
       const bank = await database.listDocuments(
         this.DATABASE_ID!,
         this.BANK_COLLECTION_ID!,
-        [Query.equal("accountId", [accountId])]
+        [Query.equal('accountId', [accountId])]
       );
-  
+
       if (bank.total !== 1) return null;
-  
+
       return parseStringify(bank.documents[0]);
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
-
-  async getAccounts({ userId }: getAccounts){
+  async getAccounts({ userId }: getAccounts) {
     try {
       // get banks from db
       const banks = await this.getBanks({ userId });
-  
+
       const accounts = await Promise.all(
         banks?.map(async (bank: Bank) => {
           // get each account info from plaid
-          const accountsResponse = await this.plaidService.plaidClient.accountsGet({
-            access_token: bank.accessToken,
-          });
+          const accountsResponse =
+            await this.plaidService.plaidClient.accountsGet({
+              access_token: bank.accessToken,
+            });
           const accountData = accountsResponse.data.accounts[0];
-  
+
           // get institution info from plaid
-          const institution = await getInstitution({
+          const institution = await this.getInstitution({
             institutionId: accountsResponse.data.item.institution_id!,
           });
-  
+
           const account = {
             id: accountData.account_id,
             availableBalance: accountData.balances.available!,
@@ -104,21 +109,40 @@ export class BankServiceService {
             appwriteItemId: bank.$id,
             sharaebleId: bank.shareableId,
           };
-  
+
           return account;
         })
       );
-  
+
       const totalBanks = accounts.length;
       const totalCurrentBalance = accounts.reduce((total, account) => {
         return total + account.currentBalance;
       }, 0);
-  
-      return parseStringify({ data: accounts, totalBanks, totalCurrentBalance });
+
+      return parseStringify({
+        data: accounts,
+        totalBanks,
+        totalCurrentBalance,
+      });
     } catch (error) {
-      console.error("An error occurred while getting the accounts:", error);
+      console.error('An error occurred while getting the accounts:', error);
     }
-  };
+  }
 
+  // Get bank info
+  async getInstitution({ institutionId }: getInstitution) {
+    try {
+      const institutionResponse =
+        await this.plaidService.plaidClient.institutionsGetById({
+          institution_id: institutionId,
+          country_codes: ['US'] as CountryCode[],
+        });
 
+      const intitution = institutionResponse.data.institution;
+
+      return parseStringify(intitution);
+    } catch (error) {
+      console.error('An error occurred while getting the accounts:', error);
+    }
+  }
 }
