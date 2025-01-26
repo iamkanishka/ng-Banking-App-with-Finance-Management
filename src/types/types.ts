@@ -120,3 +120,14 @@ export  type Bank = {
 export interface getTransactions {
   accessToken: string;
 }
+
+
+export interface CreateTransaction {
+  name: string;
+  amount: string;
+  senderId: string;
+  senderBankId: string;
+  receiverId: string;
+  receiverBankId: string;
+  email: string;
+}
