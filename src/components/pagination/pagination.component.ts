@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
@@ -42,6 +42,13 @@ import { Component, OnInit } from '@angular/core';
   </div>`,
 })
 export class PaginationComponent implements OnInit {
+
+    @Input() total_pages!: Number;
+    @Input() page!: String;
+     
+
+  
+
   constructor() {}
 
   ngOnInit(): void {}
