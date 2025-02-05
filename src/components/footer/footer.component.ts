@@ -3,8 +3,10 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-footer',
   imports: [],
-  templateUrl: './footer.component.html',
-  <footer class="footer">
+  template: `
+  
+  
+   <footer class="footer">
     <div class={"" <> if @type == "mobile", do: "footer_name-mobile", else: "footer_name"}>
       <p class="text-xl font-bold text-gray-700">
         {capitalize_first_letter(@user["first_name"])}
@@ -25,7 +27,9 @@ import { Component } from '@angular/core';
       <img src="/images/logout.svg" alt="logout" />
     </div>
   </footer>
-  styleUrl: './footer.component.scss'
+  `,
+ 
+ 
 })
 export class FooterComponent {
 
