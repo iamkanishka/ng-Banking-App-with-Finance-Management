@@ -1,6 +1,6 @@
-import { Component, OnInit } from 'angular/core';
+import { Component, OnInit } from '@angular/core';
 
-Component({
+@Component({
   selector: 'app-pagination',
   imports: [],
   template: `
@@ -8,7 +8,7 @@ Component({
     <button
       class="p-0 hover:bg-transparent"
       (click)="prev()"
-      [disabled]={page <= 1}
+      [disabled]="page <= 1"
     >
       <div class="flex">
         <img src="./assets/images/arrow-left.svg" alt="arrow" width="20" height="20" class="mr-2" />
