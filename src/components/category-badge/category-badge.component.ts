@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-category-badge',
@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   template: '<div class="category-badge"></div>',
  
 })
-export class CategoryBadgeComponent {
-
+export class CategoryBadgeComponent  implements OnInit {
+  constructor() {}
+  ngOnInit(): void {}
 }
