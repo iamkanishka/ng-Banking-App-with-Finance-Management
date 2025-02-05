@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-donut-chart',
@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './donut-chart.component.html',
   styleUrl: './donut-chart.component.scss'
 })
-export class DonutChartComponent {
-
+export class DonutChartComponent implements OnInit {
+  constructor() {}
+  ngOnInit(): void {}
 }
