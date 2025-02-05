@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-header-box',
   imports: [],
   template: `<div class="header-box">
     <h1 class="header-box-title">
-      {@title}
-      <%= if @type == "greeting" do %>
+      {title}
+      <%= if type == "greeting" do %>
         <span class="text-bankGradient">
-          &nbsp;{@user}
+          &nbsp;{user}
         </span>
       <% end %>
     </h1>
@@ -18,5 +18,10 @@ import { Component } from '@angular/core';
  
 })
 export class HeaderBoxComponent {
+  @Input() title!: String;
+  @Input() type!: String;
+  @Input() user!: String;
+
+
 
 }
