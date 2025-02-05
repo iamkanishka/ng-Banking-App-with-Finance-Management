@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-bank-card',
@@ -58,6 +58,20 @@ import { Component, OnInit } from '@angular/core';
    `
 })
 export class BankCardComponent implements OnInit {
+  @Input() account!: {};
+  @Input() userName!: String;
+
+
   constructor() {}
   ngOnInit(): void {}
+  bankTransactionHistory(){
+
+  }
+
+  format_amount(){
+
+  }
+
 }
+
+
