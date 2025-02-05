@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
+  standalone: true,
   imports: [],
   template: `
   <div class="flex justify-between gap-3">
@@ -39,7 +40,7 @@ import { Component, OnInit } from '@angular/core';
       </div>
     </.button>
   </div>`,
-});
+})
 export class PaginationComponent implements OnInit {
   constructor() {}
 
