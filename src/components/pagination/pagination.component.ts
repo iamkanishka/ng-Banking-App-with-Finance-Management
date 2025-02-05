@@ -1,4 +1,4 @@
-import { Component } from 'angular/core';
+import { Component, OnInit } from 'angular/core';
 
 Component({
   selector: 'app-pagination',
@@ -40,4 +40,8 @@ Component({
     </.button>
   </div>`,
 });
-export class PaginationComponent {}
+export class PaginationComponent implements OnInit {
+  constructor() {}
+
+  ngOnInit(): void {}
+}
