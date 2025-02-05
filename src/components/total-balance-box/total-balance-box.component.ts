@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-total-balance-box',
@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   template: `<p>total-balance-box works!</p>`,
  
 })
-export class TotalBalanceBoxComponent {
-
+export class TotalBalanceBoxComponent implements OnInit {
+  constructor() {}
+  ngOnInit(): void {}
 }
