@@ -1,11 +1,11 @@
-import { Component, OnInit } from 'angular/core';
+import { Component, OnInit } from '@angular/core';
 
-Component({
+@Component({
   selector: 'app-bank-card',
   imports: [],
   template: `
   <div class="flex flex-col cursor-pointer">
-    <div (click)="bank_transaction_history"  class="bank-card ">
+    <div (click)="bankTransactionHistory()"  class="bank-card ">
       <div class="bank-card_content">
         <div>
           <h1 class="text-16 font-semibold text-white">
@@ -55,9 +55,8 @@ Component({
     <% end %>
   </div>
 
-  
-  `,
-});
+   `
+})
 export class BankCardComponent implements OnInit {
   constructor() {}
   ngOnInit(): void {}
