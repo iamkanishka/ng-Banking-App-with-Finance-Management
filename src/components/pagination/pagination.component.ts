@@ -23,8 +23,8 @@ import { Component, Input, OnInit } from '@angular/core';
 
     <.button
       class="p-0 hover:bg-transparent"
-      (click)="next"
-      disabled={page >= total_pages}
+      (click)="next()"
+      [disabled]="page >= total_pages"
     >
       <div class="flex">
         <p>Next</p>
@@ -42,14 +42,13 @@ import { Component, Input, OnInit } from '@angular/core';
   </div>`,
 })
 export class PaginationComponent implements OnInit {
-
-    @Input() total_pages!: Number;
-    @Input() page!: String;
-     
-
-  
+  @Input() total_pages!: Number;
+  @Input() page!: String;
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  prev() {}
+  next() {}
 }
