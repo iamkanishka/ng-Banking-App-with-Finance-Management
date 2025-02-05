@@ -9,7 +9,7 @@ Component({
       <div class="bank-card_content">
         <div>
           <h1 class="text-16 font-semibold text-white">
-            {account.name}
+            {{account.name}}
           </h1>
 
           <p class="font-ibm-plex-serif font-black text-white">
