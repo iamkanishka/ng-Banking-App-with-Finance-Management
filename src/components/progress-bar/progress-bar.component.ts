@@ -3,8 +3,15 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-progress-bar',
   imports: [],
-  templateUrl: './progress-bar.component.html',
-  styleUrl: './progress-bar.component.scss'
+  template: `
+  
+  <ProgressPrimitive.Indicator
+      class={cn('h-full w-full flex-1 bg-primary transition-all', indicatorclass)}
+      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+    />
+
+  `,
+ 
 })
 export class ProgressBarComponent {
 
