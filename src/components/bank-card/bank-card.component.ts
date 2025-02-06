@@ -29,14 +29,14 @@ import { Component, Input, OnInit } from '@angular/core';
           </div>
 
           <p class="text-14 font-semibold tracking-[1.1px] text-white">
-            ●●●● ●●●● ●●●● <span class="text-16">{account.mask}</span>
+            ●●●● ●●●● ●●●● <span class="text-16">{{account.mask}}</span>
           </p>
         </article>
       </div>
 
       <div class="bank-card_icon">
-        <img [src]="./assets/images/Paypass.svg" width="20" height="24" alt="pay" />
-        <img [src]="./assets/images/mastercard.svg" width="45" height="32" alt="mastercard" class="ml-5" />
+        <img src="./assets/images/Paypass.svg" width="20" height="24" alt="pay" />
+        <img src="./assets/images/mastercard.svg" width="45" height="32" alt="mastercard" class="ml-5" />
       </div>
 
       <img
@@ -48,17 +48,19 @@ import { Component, Input, OnInit } from '@angular/core';
       />
     </div>
 
-    <%= if showBalance do %>
-      <button  data-clipboard={{account.shareableId}}>
+     @if(showBalance){
+      <button>
         Copy to Clipboard
-      <.button>
-    <% end %>
+      <button>
+     }
   </div>
 
    `
 })
 export class BankCardComponent implements OnInit {
-  @Input() account!: {};
+  @Input() showBalance: boolean = false;
+
+  @Input() account!: {name: "", current_balance: 100, mask: ""};
   @Input() userName!: String;
 
 
@@ -68,7 +70,7 @@ export class BankCardComponent implements OnInit {
 
   }
 
-  format_amount(){
+  format_amount(balance:number){
 
   }
 
