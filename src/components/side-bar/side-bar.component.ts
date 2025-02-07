@@ -26,17 +26,17 @@ import { RouterLink } from '@angular/router';
         <% is_active = current_url == route %>
         <a
           [routerLink]="['/{route}{key}']"
-          [ngClass]="{sidebar-link" + if is_active ? "bg-bank-gradient" : ""}"
+          [ngClass]="{sidebar-link" + if is_active ? "bg-bank-gradient" : ''}"
         >
           <div class="relative size-6">
             <img
               [src]={img_url}
               alt={label}
-              [ngClass]="{ if is_active ? "brightness-[3] invert-0": ""}"
+              [ngClass]="{ if is_active ? "brightness-[3] invert-0": ''}"
             />
           </div>
 
-          <p class={  "sidebar-label " <> if is_active, do: "!text-white", else: ""}>
+          <p [ngClass]="{'sidebar-label' +if is_active ? "!text-white" : ''}">
             {label}
           </p>
         </a>
