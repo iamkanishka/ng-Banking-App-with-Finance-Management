@@ -21,7 +21,7 @@ import { Component, Input, OnInit } from '@angular/core';
       {{page}} / {{total_pages}}
     </p>
 
-    <.button
+    <button
       class="p-0 hover:bg-transparent"
       (click)="next()"
       [disabled]="page >= total_pages"
@@ -38,12 +38,12 @@ import { Component, Input, OnInit } from '@angular/core';
           class="ml-2 -scale-x-100"
         />
       </div>
-    </.button>
+    </button>
   </div>`,
 })
 export class PaginationComponent implements OnInit {
-  @Input() total_pages!: Number;
-  @Input() page!: String;
+  @Input() total_pages!: number;
+  @Input() page!: number;
 
   constructor() {}
 
