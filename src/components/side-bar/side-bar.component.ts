@@ -21,17 +21,18 @@ import { RouterLink } from '@angular/router';
         <h1 class="sidebar-logo">Horizon</h1>
 </a>
 
-      <%= for %{label: label, imgURL: img_url, route: route}  <- SidebarLinks.get_sidebar_links() do %>
+
+     @for({label: label, imgURL: img_url, route: route}  of get_sidebar_links(); track $index) {
         <% is_active = current_url == route %>
         <a
           [routerLink]="['/{route}{key}']"
-          class={"sidebar-link " <> if is_active, do: "bg-bank-gradient", else: ""}
+          [ngClass]="{sidebar-link" + if is_active ? "bg-bank-gradient" : ""}"
         >
           <div class="relative size-6">
             <img
               [src]={img_url}
               alt={label}
-              class={"" <> if is_active, do: "brightness-[3] invert-0", else: ""}
+              [ngClass]="{ if is_active ? "brightness-[3] invert-0": ""}"
             />
           </div>
 
@@ -39,7 +40,7 @@ import { RouterLink } from '@angular/router';
             {label}
           </p>
         </a>
-      <% end %>
+     }
     </nav>
 
     <%= if !is_loading do %>
