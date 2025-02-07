@@ -8,14 +8,10 @@ import { transactionCategoryStyles } from '../../utils/constants';
   
   
 
-  <div class={[
-      "category-badge",
-      get_style(@chip_style, :border_color),
-      get_style(@chip_style, :chip_background_color)
-    ]}>
-      <div class={["size-2 rounded-full", get_style(@chip_style, :background_color)]}></div>
+  <div ngClass="{'category-badge {{get_style(@chip_style, :border_color)}}  {{get_style(@chip_style, :chip_background_color)}} '}">
+      <div [ngClass]="{'size-2 rounded-ful' {{get_style(@chip_style, :background_color)}} }""></div>
 
-      <p class={["text-[12px] font-medium", get_style(@chip_style, :text_color)]}>{@category}</p>
+      <p [ngClass]={["text-[12px] font-medium", get_style(@chip_style, :text_color)]}>{@category}</p>
     </div>
 
   `,
